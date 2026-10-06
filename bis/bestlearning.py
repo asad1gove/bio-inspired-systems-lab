@@ -6,13 +6,11 @@ from sklearn.datasets import make_classification
 from sklearn.model_selection import train_test_split
 import matplotlib.pyplot as plt
 
-# 1. Dataset Generation & Setup
 X, y = make_classification(n_samples=500, n_features=10, n_classes=2, random_state=42)
 X_tr, X_val, y_tr, y_val = train_test_split(X, y, test_size=0.2, random_state=42)
 train_X, train_y = torch.FloatTensor(X_tr), torch.LongTensor(y_tr)
 val_X, val_y = torch.FloatTensor(X_val), torch.LongTensor(y_val)
 
-# 2. Model Architecture & Objective Function
 class SimpleNet(nn.Module):
     def __init__(self):
         super().__init__()
@@ -32,7 +30,6 @@ def get_val_loss(lr):
     with torch.no_grad():
         return criterion(model(val_X), val_y).item()
 
-# 3. Particle Swarm Optimization (PSO)
 num_particles, iterations, bounds = 5, 5, (0.001, 0.5)
 positions = np.random.uniform(bounds[0], bounds[1], num_particles)
 velocities = np.random.uniform(-0.05, 0.05, num_particles)
@@ -57,7 +54,6 @@ for i in range(iterations):
 
 print(f"Optimal Learning Rate: {global_best_pos:.5f} with Val Loss: {global_best_score:.5f}")
 
-# 4. History Visualization
 plt.figure(figsize=(8, 5))
 plt.plot(history, marker='o', color='b')
 plt.title("PSO Optimization History")
